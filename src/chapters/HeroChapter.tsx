@@ -24,7 +24,10 @@ const itemVariants = {
 
 export function HeroChapter() {
   const prefersReducedMotion = useReducedMotion();
-  const { name, role, tagline } = portfolioContent.personal;
+  const { name, role, tagline, resumeUrl } = portfolioContent.personal;
+  const resumeHref = resumeUrl
+    ? `${import.meta.env.BASE_URL}${resumeUrl}`
+    : null;
   const [firstName, lastName] = name.split(' ');
 
   return (
@@ -67,6 +70,15 @@ export function HeroChapter() {
           >
             <span>EXPLORE</span>
           </button>
+          {resumeHref && (
+            <a
+              className="btn-chamfer btn-chamfer--ghost"
+              href={resumeHref}
+              download="Suhail_Saifi_Resume.pdf"
+            >
+              <span>DOWNLOAD RESUME</span>
+            </a>
+          )}
         </motion.div>
 
         {/* Console terminal flavor */}

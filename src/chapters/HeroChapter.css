@@ -83,6 +83,16 @@
 /* CTA */
 .hero-cta {
   margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+
+.hero-cta a.btn-chamfer {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
 }
 
 /* Terminal */

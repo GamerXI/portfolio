@@ -53,6 +53,9 @@ export function UplinkChapter() {
   const prefersReducedMotion = useReducedMotion();
   const [hoveredSocial, setHoveredSocial] = useState<string | null>(null);
   const { personal, socials } = portfolioContent;
+  const resumeHref = personal.resumeUrl
+    ? `${import.meta.env.BASE_URL}${personal.resumeUrl}`
+    : null;
 
   return (
     <section id="uplink" className="chapter uplink-chapter">
@@ -100,11 +103,24 @@ export function UplinkChapter() {
             </p>
           </div>
 
-          <a href={`mailto:${personal.email}`} className="email-button">
-            <span className="button-label">PRIMARY CHANNEL</span>
-            <span className="button-email">{personal.email}</span>
-            <span className="button-icon">→</span>
-          </a>
+          <div className="uplink-actions">
+            <a href={`mailto:${personal.email}`} className="email-button">
+              <span className="button-label">PRIMARY CHANNEL</span>
+              <span className="button-email">{personal.email}</span>
+              <span className="button-icon">→</span>
+            </a>
+            {resumeHref && (
+              <a
+                href={resumeHref}
+                download="Suhail_Saifi_Resume.pdf"
+                className="resume-button"
+              >
+                <span className="button-label">DOSSIER</span>
+                <span className="button-email">Download Resume</span>
+                <span className="button-icon">↓</span>
+              </a>
+            )}
+          </div>
         </motion.div>
 
         <motion.div className="uplink-channels" variants={itemVariants}>

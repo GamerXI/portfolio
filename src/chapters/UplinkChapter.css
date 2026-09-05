@@ -133,7 +133,16 @@
   line-height: 1.7;
 }
 
-.email-button {
+.uplink-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  align-items: stretch;
+}
+
+.email-button,
+.resume-button {
   display: inline-flex;
   flex-direction: column;
   align-items: center;
@@ -147,7 +156,12 @@
   transition: var(--transition-smooth);
 }
 
-.email-button::before {
+.resume-button {
+  border-color: var(--magenta, #ff2d95);
+}
+
+.email-button::before,
+.resume-button::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -156,17 +170,26 @@
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.email-button:hover::before {
+.email-button:hover::before,
+.resume-button:hover::before {
   transform: translateY(0);
 }
 
-.email-button:hover {
+.email-button:hover,
+.resume-button:hover {
   color: var(--void);
+}
+
+.resume-button::before {
+  background: var(--magenta, #ff2d95);
 }
 
 .email-button:hover .button-label,
 .email-button:hover .button-email,
-.email-button:hover .button-icon {
+.email-button:hover .button-icon,
+.resume-button:hover .button-label,
+.resume-button:hover .button-email,
+.resume-button:hover .button-icon {
   color: var(--void);
 }
 

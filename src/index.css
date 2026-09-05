@@ -309,6 +309,19 @@ h1, h2, h3, h4, h5, h6 {
   opacity: 1;
 }
 
+.btn-chamfer--ghost {
+  border-color: var(--magenta, #ff2d95);
+  color: var(--magenta, #ff2d95);
+}
+
+.btn-chamfer--ghost::before {
+  background: var(--magenta, #ff2d95);
+}
+
+.btn-chamfer--ghost:hover {
+  color: var(--void, #0a0a0f);
+}
+
 .btn-chamfer:hover {
   color: var(--void);
 }

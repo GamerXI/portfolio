@@ -75,7 +75,7 @@ maintenance costs by 25% through optimized architecture and automation.`,
     location: "Bengaluru, India",
     phone: "(+91) 9205604979",
     email: "suhailsaifi2020@gmail.com",
-    resumeUrl: null,
+    resumeUrl: "Suhail_Saifi_Resume.pdf",
   },
 
   skills: [
