@@ -18,10 +18,13 @@ function ParticleField() {
       positions[i3 + 1] = (Math.random() - 0.5) * 50;
       positions[i3 + 2] = (Math.random() - 0.5) * 50;
       
-      const isCyan = Math.random() > 0.3;
-      colors[i3] = isCyan ? 0 : 1;
-      colors[i3 + 1] = isCyan ? 1 : 0;
-      colors[i3 + 2] = 1;
+      // Warm chalk / amber particles (no cyan-magenta split)
+      const warm = Math.random();
+      if (warm > 0.72) {
+        colors[i3] = 0.91; colors[i3 + 1] = 0.65; colors[i3 + 2] = 0.29; // amber
+      } else {
+        colors[i3] = 0.96; colors[i3 + 1] = 0.95; colors[i3 + 2] = 0.93; // chalk
+      }
     }
     
     return { positions, colors };
@@ -50,7 +53,7 @@ function ParticleField() {
         size={0.05}
         vertexColors
         transparent
-        opacity={0.8}
+        opacity={0.55}
         sizeAttenuation
         blending={THREE.AdditiveBlending}
       />
@@ -75,13 +78,13 @@ function FloatingOrb({ position, color, scale = 1 }: { position: [number, number
         <MeshDistortMaterial
           color={color}
           emissive={color}
-          emissiveIntensity={0.5}
+          emissiveIntensity={0.25}
           roughness={0.2}
           metalness={0.8}
           distort={0.4}
           speed={2}
           transparent
-          opacity={0.6}
+          opacity={0.45}
         />
       </mesh>
     </Float>
@@ -91,7 +94,7 @@ function FloatingOrb({ position, color, scale = 1 }: { position: [number, number
 function GridFloor() {
   return (
     <gridHelper
-      args={[100, 50, '#00ffff', '#1a1a2e']}
+      args={[100, 50, '#e8a54b', '#2a2622']}
       position={[0, -10, 0]}
       rotation={[0, 0, 0]}
     />
@@ -142,19 +145,19 @@ export function Scene3D({ scrollProgress }: Scene3DProps) {
         }}
       >
         <Suspense fallback={null}>
-          <fog attach="fog" args={['#000000', 10, 50]} />
+          <fog attach="fog" args={['#0c0a09', 12, 48]} />
           <ambientLight intensity={0.2} />
-          <pointLight position={[10, 10, 10]} intensity={0.5} color="#00ffff" />
-          <pointLight position={[-10, -10, -10]} intensity={0.3} color="#ff00ff" />
+          <pointLight position={[10, 10, 10]} intensity={0.55} color="#e8a54b" />
+          <pointLight position={[-10, -10, -10]} intensity={0.25} color="#f5f3ee" />
           
           <CameraController scrollProgress={scrollProgress} />
           <ParticleField />
           <Stars radius={100} depth={50} count={3000} factor={4} fade speed={0.5} />
           <GridFloor />
           
-          <FloatingOrb position={[-5, 2, -10]} color="#00ffff" scale={1.5} />
-          <FloatingOrb position={[6, -1, -8]} color="#ff00ff" scale={1} />
-          <FloatingOrb position={[0, 5, -15]} color="#00ff88" scale={0.8} />
+          <FloatingOrb position={[-5, 2, -10]} color="#e8a54b" scale={1.5} />
+          <FloatingOrb position={[6, -1, -8]} color="#f0d7a8" scale={1} />
+          <FloatingOrb position={[0, 5, -15]} color="#c9c4ba" scale={0.8} />
         </Suspense>
       </Canvas>
     </div>

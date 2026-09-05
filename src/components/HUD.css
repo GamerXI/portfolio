@@ -50,7 +50,7 @@
 .nav-link.active .nav-marker,
 .nav-link:hover .nav-marker {
   background: var(--cyan);
-  box-shadow: 0 0 8px var(--cyan);
+  box-shadow: none;
 }
 
 .nav-label {
@@ -103,7 +103,7 @@
   left: 0;
   width: 100%;
   background: linear-gradient(180deg, var(--cyan), var(--magenta));
-  box-shadow: 0 0 8px var(--cyan);
+  box-shadow: none;
 }
 
 .progress-numbers {

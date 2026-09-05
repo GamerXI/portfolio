@@ -44,7 +44,7 @@
 .loading-fill {
   height: 100%;
   background: var(--cyan);
-  box-shadow: 0 0 10px var(--cyan);
+  box-shadow: none;
 }
 
 .loading-info {

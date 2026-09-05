@@ -52,11 +52,12 @@
 
 .title-line {
   font-family: var(--font-display);
-  font-size: clamp(5rem, 18vw, 14rem);
-  font-weight: 400;
+  font-size: clamp(4.5rem, 16vw, 12rem);
+  font-weight: 500;
   color: var(--text-primary);
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  text-transform: none;
+  font-optical-sizing: auto;
 }
 
 /* Role */

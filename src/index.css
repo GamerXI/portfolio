@@ -1,39 +1,43 @@
-/* Import fonts - Bebas Neue for bold condensed headlines */
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+/* Dark editorial cinema — Fraunces display + Inter Tight body */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&display=swap');
 
-/* CSS Custom Properties - Cyber/Sci-Fi Theme */
+/* CSS Custom Properties — charcoal + single amber accent */
 :root {
-  /* Core colors */
-  --void: #000000;
-  --void-deep: #030308;
-  --void-surface: #0a0a12;
-  --void-elevated: #12121f;
-  
-  /* Accent colors */
-  --cyan: #00ffff;
-  --cyan-dim: #00b8b8;
-  --cyan-glow: rgba(0, 255, 255, 0.15);
-  --magenta: #ff00ff;
-  --magenta-dim: #b800b8;
-  --magenta-glow: rgba(255, 0, 255, 0.15);
-  --electric: #00ff88;
-  --warning: #ffaa00;
-  --error: #ff3366;
-  
-  /* Text colors */
-  --text-primary: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --text-muted: rgba(255, 255, 255, 0.4);
-  --text-dim: rgba(255, 255, 255, 0.2);
-  
+  /* Core colors — warm charcoal, not pure black */
+  --void: #0c0a09;
+  --void-deep: #080706;
+  --void-surface: #141210;
+  --void-elevated: #1c1916;
+  --border: #2a2622;
+
+  /* Accent — single amber (legacy names remapped so chapters follow) */
+  --amber: #e8a54b;
+  --amber-dim: #c4842f;
+  --amber-glow: rgba(232, 165, 75, 0.12);
+  --cyan: var(--amber);
+  --cyan-dim: var(--amber-dim);
+  --cyan-glow: var(--amber-glow);
+  --magenta: #f0d7a8;
+  --magenta-dim: #d4b889;
+  --magenta-glow: rgba(240, 215, 168, 0.10);
+  --electric: #e8a54b;
+  --warning: #e8a54b;
+  --error: #c45c4a;
+
+  /* Text — warm chalk, not pure white */
+  --text-primary: #f5f3ee;
+  --text-secondary: #c9c4ba;
+  --text-muted: #a39e96;
+  --text-dim: #6b6560;
+
   /* Typography */
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
-  --font-display: 'Bebas Neue', 'Impact', sans-serif;
-  --font-body: 'Space Grotesk', sans-serif;
-  
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --font-display: 'Fraunces', 'Times New Roman', serif;
+  --font-body: 'Inter Tight', system-ui, sans-serif;
+
   /* Spacing */
   --section-padding: clamp(4rem, 10vh, 8rem);
-  
+
   /* Transitions */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-smooth: 400ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -53,9 +57,9 @@ html {
 }
 
 body {
-  font-family: var(--font-mono);
-  font-size: 0.875rem;
-  line-height: 1.6;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.65;
   color: var(--text-primary);
   background: var(--void);
   -webkit-font-smoothing: antialiased;
@@ -114,9 +118,10 @@ body {
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  font-optical-sizing: auto;
 }
 
 /* Grain overlay */
@@ -278,11 +283,13 @@ h1, h2, h3, h4, h5, h6 {
   position: relative;
   padding: 0.875rem 2rem;
   background: transparent;
-  border: 1px solid var(--cyan);
-  color: var(--cyan);
-  font-family: var(--font-display);
-  font-size: 0.875rem;
-  letter-spacing: 0.1em;
+  border: 1px solid var(--amber);
+  color: var(--amber);
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   cursor: pointer;
   clip-path: polygon(
     0 0,
@@ -310,16 +317,16 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-chamfer--ghost {
-  border-color: var(--magenta, #ff2d95);
-  color: var(--magenta, #ff2d95);
+  border-color: var(--text-muted);
+  color: var(--text-primary);
 }
 
 .btn-chamfer--ghost::before {
-  background: var(--magenta, #ff2d95);
+  background: var(--text-primary);
 }
 
 .btn-chamfer--ghost:hover {
-  color: var(--void, #0a0a0f);
+  color: var(--void);
 }
 
 .btn-chamfer:hover {

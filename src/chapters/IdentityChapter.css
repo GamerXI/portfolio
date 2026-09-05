@@ -28,7 +28,7 @@
   width: 6px;
   height: 6px;
   background: var(--cyan);
-  box-shadow: 0 0 8px var(--cyan);
+  box-shadow: none;
 }
 
 .section-number {
@@ -161,12 +161,12 @@
 
 .stat-card.cyan:hover {
   border-color: var(--cyan);
-  box-shadow: 0 0 20px var(--cyan-glow);
+  box-shadow: 0 0 0 1px var(--border);
 }
 
 .stat-card.magenta:hover {
   border-color: var(--magenta);
-  box-shadow: 0 0 20px var(--magenta-glow);
+  box-shadow: 0 0 0 1px var(--border);
 }
 
 .stat-value {
