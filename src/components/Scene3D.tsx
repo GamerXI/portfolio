@@ -1,120 +1,65 @@
-import { useRef, useMemo, Suspense } from 'react';
+import { useEffect, useRef, Suspense } from 'react';
+import type { RefObject } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { Stars, Float, MeshDistortMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 import { useReducedMotion } from 'framer-motion';
+import { useSceneQuality } from './scene/useSceneQuality';
+import { Particles } from './scene/Particles';
+import { NodeLattice } from './scene/NodeLattice';
+import { CrystalForm } from './scene/CrystalForm';
 
-function ParticleField() {
-  const particlesRef = useRef<THREE.Points>(null);
-  const count = 2000;
-
-  const particles = useMemo(() => {
-    const positions = new Float32Array(count * 3);
-    const colors = new Float32Array(count * 3);
-    
-    for (let i = 0; i < count; i++) {
-      const i3 = i * 3;
-      positions[i3] = (Math.random() - 0.5) * 50;
-      positions[i3 + 1] = (Math.random() - 0.5) * 50;
-      positions[i3 + 2] = (Math.random() - 0.5) * 50;
-      
-      // Warm chalk / amber particles (no cyan-magenta split)
-      const warm = Math.random();
-      if (warm > 0.72) {
-        colors[i3] = 0.91; colors[i3 + 1] = 0.65; colors[i3 + 2] = 0.29; // amber
-      } else {
-        colors[i3] = 0.96; colors[i3 + 1] = 0.95; colors[i3 + 2] = 0.93; // chalk
-      }
-    }
-    
-    return { positions, colors };
-  }, []);
-
-  useFrame((state) => {
-    if (particlesRef.current) {
-      particlesRef.current.rotation.y = state.clock.elapsedTime * 0.02;
-      particlesRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.01) * 0.1;
-    }
-  });
-
-  return (
-    <points ref={particlesRef}>
-      <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          args={[particles.positions, 3]}
-        />
-        <bufferAttribute
-          attach="attributes-color"
-          args={[particles.colors, 3]}
-        />
-      </bufferGeometry>
-      <pointsMaterial
-        size={0.05}
-        vertexColors
-        transparent
-        opacity={0.55}
-        sizeAttenuation
-        blending={THREE.AdditiveBlending}
-      />
-    </points>
-  );
-}
-
-function FloatingOrb({ position, color, scale = 1 }: { position: [number, number, number]; color: string; scale?: number }) {
-  const meshRef = useRef<THREE.Mesh>(null);
-  
-  useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x = state.clock.elapsedTime * 0.2;
-      meshRef.current.rotation.y = state.clock.elapsedTime * 0.3;
-    }
-  });
-
-  return (
-    <Float speed={2} rotationIntensity={0.5} floatIntensity={1}>
-      <mesh ref={meshRef} position={position} scale={scale}>
-        <icosahedronGeometry args={[1, 1]} />
-        <MeshDistortMaterial
-          color={color}
-          emissive={color}
-          emissiveIntensity={0.25}
-          roughness={0.2}
-          metalness={0.8}
-          distort={0.4}
-          speed={2}
-          transparent
-          opacity={0.45}
-        />
-      </mesh>
-    </Float>
-  );
-}
-
-function GridFloor() {
-  return (
-    <gridHelper
-      args={[100, 50, '#e8a54b', '#2a2622']}
-      position={[0, -10, 0]}
-      rotation={[0, 0, 0]}
-    />
-  );
-}
-
-function CameraController({ scrollProgress }: { scrollProgress: number }) {
-  const { camera } = useThree();
-  
+/** Amber grid that recedes into the fog — a faint floor for the space. */
+function GridFloor({ scrollProgress }: { scrollProgress: number }) {
+  const ref = useRef<THREE.GridHelper>(null);
   useFrame(() => {
-    const targetZ = 15 - scrollProgress * 10;
-    const targetY = 2 + Math.sin(scrollProgress * Math.PI) * 3;
-    const targetX = Math.sin(scrollProgress * Math.PI * 2) * 2;
-    
-    camera.position.x += (targetX - camera.position.x) * 0.02;
-    camera.position.y += (targetY - camera.position.y) * 0.02;
-    camera.position.z += (targetZ - camera.position.z) * 0.02;
-    camera.lookAt(0, 0, 0);
+    if (ref.current) {
+      const mat = ref.current.material as THREE.Material & { opacity: number };
+      mat.transparent = true;
+      mat.opacity = 0.18 + Math.sin(scrollProgress * Math.PI) * 0.12;
+    }
   });
-  
+  return (
+    <gridHelper ref={ref} args={[120, 60, '#e8a54b', '#2a2622']} position={[0, -9, 0]} />
+  );
+}
+
+/**
+ * Scroll-driven camera. The camera pulls in and arcs as the visitor scrolls,
+ * with a small pointer parallax layered on top so the space feels alive.
+ */
+function CameraRig({
+  scrollProgress,
+  mouse,
+  reactive,
+}: {
+  scrollProgress: number;
+  mouse: RefObject<THREE.Vector2>;
+  reactive: boolean;
+}) {
+  const { camera } = useThree();
+  const target = useRef(new THREE.Vector3(0, 0, 0));
+
+  useFrame((_, delta) => {
+    const s = scrollProgress;
+    // Dolly in through the story, then ease back out at the end.
+    const targetZ = 16 - s * 9 + Math.pow(s, 3) * 6;
+    const targetY = 1.5 + Math.sin(s * Math.PI) * 3.5;
+    const targetX = Math.sin(s * Math.PI * 2) * 3;
+
+    const mx = reactive ? mouse.current.x : 0;
+    const my = reactive ? mouse.current.y : 0;
+
+    const k = Math.min(1, delta * 1.8);
+    camera.position.x += (targetX + mx * 1.4 - camera.position.x) * k;
+    camera.position.y += (targetY + my * 1.0 - camera.position.y) * k;
+    camera.position.z += (targetZ - camera.position.z) * k;
+
+    // Look slightly ahead into the scroll direction.
+    const lookY = -s * 1.5;
+    target.current.set(0, lookY, -2);
+    camera.lookAt(target.current);
+  });
+
   return null;
 }
 
@@ -124,7 +69,24 @@ interface Scene3DProps {
 
 export function Scene3D({ scrollProgress }: Scene3DProps) {
   const prefersReducedMotion = useReducedMotion();
-  
+  const quality = useSceneQuality();
+  const mouse = useRef(new THREE.Vector2(0, 0));
+
+  // Track the pointer at the window level — the canvas itself has
+  // pointer-events disabled so it never sees the events directly.
+  useEffect(() => {
+    if (prefersReducedMotion || quality.coarse) return;
+    const onMove = (e: PointerEvent) => {
+      mouse.current.set(
+        (e.clientX / window.innerWidth) * 2 - 1,
+        -((e.clientY / window.innerHeight) * 2 - 1)
+      );
+    };
+    window.addEventListener('pointermove', onMove, { passive: true });
+    return () => window.removeEventListener('pointermove', onMove);
+  }, [prefersReducedMotion, quality.coarse]);
+
+  // Reduced motion: a calm static gradient, no WebGL.
   if (prefersReducedMotion) {
     return (
       <div className="scene-fallback">
@@ -133,31 +95,41 @@ export function Scene3D({ scrollProgress }: Scene3DProps) {
     );
   }
 
+  const reactive = !quality.coarse;
+
   return (
     <div className="scene-container">
       <Canvas
-        camera={{ position: [0, 2, 15], fov: 60 }}
-        dpr={[1, 1.5]}
-        gl={{ 
-          antialias: true,
-          alpha: true,
-          powerPreference: 'high-performance'
-        }}
+        camera={{ position: [0, 1.5, 16], fov: 60 }}
+        dpr={[1, quality.dprMax]}
+        gl={{ antialias: !quality.coarse, alpha: true, powerPreference: 'high-performance' }}
       >
         <Suspense fallback={null}>
-          <fog attach="fog" args={['#0c0a09', 12, 48]} />
-          <ambientLight intensity={0.2} />
-          <pointLight position={[10, 10, 10]} intensity={0.55} color="#e8a54b" />
-          <pointLight position={[-10, -10, -10]} intensity={0.25} color="#f5f3ee" />
-          
-          <CameraController scrollProgress={scrollProgress} />
-          <ParticleField />
-          <Stars radius={100} depth={50} count={3000} factor={4} fade speed={0.5} />
-          <GridFloor />
-          
-          <FloatingOrb position={[-5, 2, -10]} color="#e8a54b" scale={1.5} />
-          <FloatingOrb position={[6, -1, -8]} color="#f0d7a8" scale={1} />
-          <FloatingOrb position={[0, 5, -15]} color="#c9c4ba" scale={0.8} />
+          <fog attach="fog" args={['#0c0a09', 14, 52]} />
+          <ambientLight intensity={0.25} />
+          <pointLight position={[8, 10, 8]} intensity={0.7} color="#e8a54b" />
+          <pointLight position={[-10, -8, -6]} intensity={0.3} color="#f5f3ee" />
+          <directionalLight position={[4, 6, 5]} intensity={0.4} color="#f0d7a8" />
+
+          <CameraRig scrollProgress={scrollProgress} mouse={mouse} reactive={reactive} />
+
+          <Particles
+            mouse={mouse}
+            scrollProgress={scrollProgress}
+            count={quality.particleCount}
+            reactive={reactive}
+          />
+
+          <NodeLattice mouse={mouse} scrollProgress={scrollProgress} reactive={reactive} />
+
+          <CrystalForm
+            mouse={mouse}
+            scrollProgress={scrollProgress}
+            glass={quality.allowGlass}
+            reactive={reactive}
+          />
+
+          {!quality.coarse && <GridFloor scrollProgress={scrollProgress} />}
         </Suspense>
       </Canvas>
     </div>
