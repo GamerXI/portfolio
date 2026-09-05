@@ -1,0 +1,147 @@
+.hero-chapter {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 6rem 2rem;
+}
+
+.hero-content {
+  max-width: 1000px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Status indicator */
+.hero-status {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.status-dot-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--electric);
+  box-shadow: 0 0 12px var(--electric);
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.status-text {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--text-muted);
+  letter-spacing: 0.15em;
+}
+
+/* Main title - bold condensed */
+.hero-title {
+  display: flex;
+  flex-direction: column;
+  line-height: 0.85;
+}
+
+.title-line {
+  font-family: var(--font-display);
+  font-size: clamp(5rem, 18vw, 14rem);
+  font-weight: 400;
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+/* Role */
+.hero-role {
+  margin-top: 1rem;
+}
+
+.role-text {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  color: var(--cyan);
+  letter-spacing: 0.1em;
+}
+
+/* Tagline */
+.hero-tagline {
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  color: var(--text-muted);
+  max-width: 500px;
+  line-height: 1.6;
+}
+
+/* CTA */
+.hero-cta {
+  margin-top: 1rem;
+}
+
+/* Terminal */
+.hero-terminal {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 2rem;
+}
+
+.terminal-line {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+}
+
+/* Scroll indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.scroll-text {
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  color: var(--text-dim);
+  letter-spacing: 0.2em;
+}
+
+.scroll-arrow {
+  font-size: 1rem;
+  color: var(--cyan);
+}
+
+@media (max-width: 768px) {
+  .hero-chapter {
+    padding: 4rem 1.5rem;
+    align-items: flex-start;
+    padding-top: 8rem;
+  }
+  
+  .hero-content {
+    gap: 1.5rem;
+  }
+  
+  .hero-tagline {
+    font-size: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .status-dot {
+    animation: none;
+  }
+}

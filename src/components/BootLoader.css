@@ -1,0 +1,170 @@
+.boot-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: var(--void);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.boot-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+}
+
+.boot-mark {
+  text-align: center;
+}
+
+.mark-text {
+  font-family: var(--font-display);
+  font-size: clamp(8rem, 30vw, 20rem);
+  font-weight: 400;
+  color: var(--text-primary);
+  line-height: 1;
+  letter-spacing: 0.05em;
+}
+
+.boot-loading {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.loading-track {
+  height: 2px;
+  background: var(--void-elevated);
+  overflow: hidden;
+}
+
+.loading-fill {
+  height: 100%;
+  background: var(--cyan);
+  box-shadow: 0 0 10px var(--cyan);
+}
+
+.loading-info {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.15em;
+}
+
+.loading-label {
+  color: var(--text-dim);
+}
+
+.loading-percent {
+  color: var(--cyan);
+}
+
+.boot-status {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+}
+
+/* Frame corners */
+.boot-corner {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+}
+
+.boot-corner::before,
+.boot-corner::after {
+  content: '';
+  position: absolute;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.boot-corner::before {
+  width: 40px;
+  height: 1px;
+}
+
+.boot-corner::after {
+  width: 1px;
+  height: 40px;
+}
+
+.boot-corner--tl {
+  top: 2rem;
+  left: 2rem;
+}
+
+.boot-corner--tl::before,
+.boot-corner--tl::after {
+  top: 0;
+  left: 0;
+}
+
+.boot-corner--tr {
+  top: 2rem;
+  right: 2rem;
+}
+
+.boot-corner--tr::before {
+  top: 0;
+  right: 0;
+}
+
+.boot-corner--tr::after {
+  top: 0;
+  right: 0;
+}
+
+.boot-corner--bl {
+  bottom: 2rem;
+  left: 2rem;
+}
+
+.boot-corner--bl::before {
+  bottom: 0;
+  left: 0;
+}
+
+.boot-corner--bl::after {
+  bottom: 0;
+  left: 0;
+}
+
+.boot-corner--br {
+  bottom: 2rem;
+  right: 2rem;
+}
+
+.boot-corner--br::before {
+  bottom: 0;
+  right: 0;
+}
+
+.boot-corner--br::after {
+  bottom: 0;
+  right: 0;
+}
+
+@media (max-width: 640px) {
+  .boot-loading {
+    width: 150px;
+  }
+  
+  .boot-corner {
+    width: 25px;
+    height: 25px;
+  }
+  
+  .boot-corner::before {
+    width: 25px;
+  }
+  
+  .boot-corner::after {
+    height: 25px;
+  }
+}

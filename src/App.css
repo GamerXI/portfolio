@@ -1,0 +1,92 @@
+.app {
+  position: relative;
+  min-height: 100vh;
+}
+
+/* WebGL Scene */
+.scene-wrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.scene-wrapper canvas {
+  display: block;
+}
+
+.scene-container {
+  position: absolute;
+  inset: 0;
+}
+
+/* Scene fallback for reduced motion */
+.scene-fallback {
+  position: absolute;
+  inset: 0;
+}
+
+.fallback-gradient {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    var(--void-surface) 0%,
+    var(--void) 100%
+  );
+}
+
+/* Chapters container */
+.chapters {
+  position: relative;
+  z-index: 1;
+}
+
+.chapter {
+  position: relative;
+}
+
+/* Ensure content is readable over the 3D scene */
+.chapter::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    rgba(0, 0, 0, 0.3) 50%,
+    rgba(0, 0, 0, 0.6) 100%
+  );
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Mobile performance optimizations */
+@media (max-width: 768px) {
+  .scene-wrapper {
+    opacity: 0.7;
+  }
+  
+  .chapter::before {
+    background: radial-gradient(
+      ellipse at center,
+      transparent 0%,
+      rgba(0, 0, 0, 0.5) 50%,
+      rgba(0, 0, 0, 0.8) 100%
+    );
+  }
+}
+
+/* Reduce visual complexity on smaller screens */
+@media (max-width: 480px) {
+  .scene-wrapper {
+    opacity: 0.5;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .chapter::before {
+    background: rgba(0, 0, 0, 0.8);
+  }
+}
