@@ -1,56 +1,58 @@
 .hero-avatar {
   position: absolute;
   top: 50%;
-  right: 5%;
-  width: clamp(300px, 34vw, 520px);
+  /* Anchor to the right edge of the centered 1000px content stage (not the
+     viewport edge) so it sits beside the name instead of floating far right. */
+  right: max(2rem, calc(50% - 520px));
+  transform: translateY(-50%);
+  width: clamp(190px, 22vw, 380px);
   aspect-ratio: 1 / 1;
-  margin-top: -17vw;
   z-index: 2;
   pointer-events: auto;
   cursor: pointer;
-  animation: avatar-float 6s ease-in-out infinite;
-  will-change: transform;
   filter: drop-shadow(0 24px 54px rgba(0, 0, 0, 0.45));
 }
 
-.hero-avatar.is-static {
-  animation: none;
-}
-
-/* The package renders its own sized container; make it fill the wrapper. */
+/* The package renders its own sized container; make it fill the wrapper and
+   carry the idle float (kept off the wrapper so it never fights centering). */
 .hero-avatar > * {
   width: 100% !important;
   height: 100% !important;
+  animation: avatar-float 6s ease-in-out infinite;
+  will-change: transform;
 }
 
-/* Idle, time-based hover */
+.hero-avatar.is-static > * {
+  animation: none;
+}
+
 @keyframes avatar-float {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-14px); }
+  50% { transform: translateY(-12px); }
 }
 
-/* Tablet: tuck into the lower-right corner, above the scroll cue. */
-@media (max-width: 900px) {
+/* Once the hero stacks to a top-aligned layout (<=768px), sit beside the
+   name. The name is a fixed rem offset from the top (padding-top: 8rem), so
+   anchor with a fixed rem top — not a % of height — to stay beside it on both
+   short and tall phones. */
+@media (max-width: 768px) {
   .hero-avatar {
-    width: clamp(150px, 40vw, 250px);
-    top: auto;
-    bottom: 7rem;
-    right: 1rem;
-    margin-top: 0;
+    width: clamp(120px, 34vw, 240px);
+    top: 14rem;
+    right: 2.5%;
   }
 }
 
-/* Phones: smaller, still lower-right. */
-@media (max-width: 480px) {
+@media (max-width: 380px) {
   .hero-avatar {
-    width: clamp(120px, 42vw, 180px);
-    bottom: 5.5rem;
-    right: 0.75rem;
+    width: clamp(110px, 36vw, 200px);
+    top: 13rem;
+    right: 2%;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-avatar {
+  .hero-avatar > * {
     animation: none;
   }
 }
