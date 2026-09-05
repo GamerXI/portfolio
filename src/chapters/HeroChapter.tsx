@@ -81,11 +81,6 @@ export function HeroChapter() {
           )}
         </motion.div>
 
-        {/* Console terminal flavor */}
-        <motion.div className="hero-terminal" variants={itemVariants}>
-          <span className="terminal-line">// PORTFOLIO_V2.0</span>
-          <span className="terminal-line">// SCROLL_TO_NAVIGATE</span>
-        </motion.div>
       </motion.div>
 
       {/* Scroll indicator */}

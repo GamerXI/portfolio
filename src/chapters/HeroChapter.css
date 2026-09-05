@@ -96,20 +96,6 @@
   align-items: center;
 }
 
-/* Terminal */
-.hero-terminal {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  margin-top: 2rem;
-}
-
-.terminal-line {
-  font-family: var(--font-mono);
-  font-size: 0.625rem;
-  color: var(--text-dim);
-  letter-spacing: 0.05em;
-}
 
 /* Scroll indicator */
 .scroll-indicator {

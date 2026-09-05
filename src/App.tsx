@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useReducedMotion } from 'framer-motion';
 import Lenis from 'lenis';
 import { BootLoader } from './components/BootLoader';
+import { CustomCursor } from './components/CustomCursor';
 import { Scene3D } from './components/Scene3D';
 import { HUD } from './components/HUD';
 import { HeroChapter } from './chapters/HeroChapter';
@@ -96,6 +97,7 @@ function App() {
 
   return (
     <div className="app">
+      <CustomCursor />
       {!prefersReducedMotion && (
         <div className="scene-wrapper">
           <Scene3D scrollProgress={scrollProgress} />
