@@ -2,27 +2,10 @@ import { useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { portfolioContent } from '../content/portfolio';
 import type { Project } from '../content/portfolio';
+import { ScrollReveal } from '../components/ScrollReveal';
 import './MissionsChapter.css';
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-      delayChildren: 0.2,
-    },
-  },
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 60 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: 'easeOut' as const },
-  },
-};
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 export function MissionsChapter() {
   const prefersReducedMotion = useReducedMotion();
@@ -32,30 +15,27 @@ export function MissionsChapter() {
 
   return (
     <section id="missions" className="chapter missions-chapter">
-      <motion.div
-        className="missions-container"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-100px' }}
-      >
-        <motion.header className="section-header" variants={cardVariants}>
+      <div className="missions-container">
+        <ScrollReveal className="section-header">
           <div className="section-marker">
             <span className="section-marker-dot" />
             <span className="section-number">003</span>
           </div>
           <h2 className="section-title">MISSIONS.</h2>
           <span className="section-label">// PROJECT_ARCHIVE</span>
-        </motion.header>
+        </ScrollReveal>
 
         <div className="missions-grid">
           {featuredProjects.map((project: Project, index: number) => (
             <motion.article
               key={project.id}
               className={`mission-card ${expandedProject === project.id ? 'expanded' : ''}`}
-              variants={cardVariants}
               layoutId={project.id}
               onClick={() => setExpandedProject(expandedProject === project.id ? null : project.id)}
+              initial={prefersReducedMotion ? undefined : { opacity: 0, y: 48 }}
+              whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+              viewport={{ once: false, amount: 0.25 }}
+              transition={{ duration: 0.7, ease: EASE, delay: Math.min(index * 0.08, 0.4) }}
             >
               <div className="card-header">
                 <div className="card-status">
@@ -157,11 +137,11 @@ export function MissionsChapter() {
           ))}
         </div>
 
-        <motion.div className="missions-footer" variants={cardVariants}>
+        <ScrollReveal className="missions-footer">
           <span className="footer-label">ARCHIVE STATUS</span>
           <span className="footer-value">{projects.length} TOTAL MISSIONS</span>
-        </motion.div>
-      </motion.div>
+        </ScrollReveal>
+      </div>
     </section>
   );
 }

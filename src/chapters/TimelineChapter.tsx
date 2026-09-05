@@ -1,76 +1,32 @@
-import { motion, useReducedMotion } from 'framer-motion';
 import { portfolioContent } from '../content/portfolio';
 import type { Experience } from '../content/portfolio';
+import { ScrollReveal } from '../components/ScrollReveal';
 import './TimelineChapter.css';
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-      delayChildren: 0.2,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, x: -50 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: { duration: 0.6, ease: 'easeOut' as const },
-  },
-};
-
 export function TimelineChapter() {
-  const prefersReducedMotion = useReducedMotion();
   const { experience } = portfolioContent;
 
   return (
     <section id="timeline" className="chapter timeline-chapter">
-      <motion.div
-        className="timeline-container"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-100px' }}
-      >
-        <motion.header className="section-header" variants={itemVariants}>
+      <div className="timeline-container">
+        <ScrollReveal className="section-header">
           <div className="section-marker">
             <span className="section-marker-dot" />
             <span className="section-number">004</span>
           </div>
           <h2 className="section-title">TIMELINE.</h2>
           <span className="section-label">// CAREER_LOG</span>
-        </motion.header>
+        </ScrollReveal>
 
         <div className="timeline-track">
           <div className="track-line">
-            <motion.div
-              className="track-progress"
-              initial={{ scaleY: 0 }}
-              whileInView={{ scaleY: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.5, ease: 'easeOut' }}
-              style={{ transformOrigin: 'top' }}
-            />
+            <div className="track-progress" style={{ transformOrigin: 'top' }} />
           </div>
 
           {experience.map((exp: Experience, index: number) => (
-            <motion.article
-              key={exp.id}
-              className="timeline-entry"
-              variants={itemVariants}
-            >
+            <ScrollReveal key={exp.id} className="timeline-entry" x={-44} delay={Math.min(index * 0.08, 0.5)}>
               <div className="entry-marker">
-                <motion.div
-                  className="marker-dot"
-                  initial={prefersReducedMotion ? {} : { scale: 0 }}
-                  whileInView={{ scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.2 + 0.5 }}
-                />
+                <div className="marker-dot" />
                 <span className="marker-date">{exp.period}</span>
               </div>
 
@@ -95,17 +51,10 @@ export function TimelineChapter() {
                   {exp.highlights && (
                     <ul className="card-highlights">
                       {exp.highlights.map((highlight: string, hIndex: number) => (
-                        <motion.li
-                          key={hIndex}
-                          className="highlight-item"
-                          initial={prefersReducedMotion ? {} : { opacity: 0, x: -20 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: hIndex * 0.1 + 0.3 }}
-                        >
+                        <li key={hIndex} className="highlight-item">
                           <span className="highlight-bullet">&gt;</span>
                           <span className="highlight-text">{highlight}</span>
-                        </motion.li>
+                        </li>
                       ))}
                     </ul>
                   )}
@@ -127,11 +76,11 @@ export function TimelineChapter() {
                   </span>
                 </div>
               </div>
-            </motion.article>
+            </ScrollReveal>
           ))}
         </div>
 
-        <motion.div className="timeline-footer" variants={itemVariants}>
+        <ScrollReveal className="timeline-footer">
           <div className="footer-stat">
             <span className="stat-value">
               {new Date().getFullYear() - 2021}+
@@ -148,8 +97,8 @@ export function TimelineChapter() {
             <span className="stat-value">∞</span>
             <span className="stat-label">Projects Built</span>
           </div>
-        </motion.div>
-      </motion.div>
+        </ScrollReveal>
+      </div>
     </section>
   );
 }

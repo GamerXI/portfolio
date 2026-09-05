@@ -7,6 +7,9 @@
     "types": ["vite/client"],
     "allowArbitraryExtensions": true,
     "skipLibCheck": true,
+    /* A dependency ships .d.ts.map files; stop build mode from redirecting to
+       its (unshipped) source project and failing to read its tsconfig. */
+    "disableSourceOfProjectReferenceRedirect": true,
 
     /* Bundler mode */
     "moduleResolution": "bundler",

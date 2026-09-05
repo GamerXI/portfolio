@@ -6,6 +6,11 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   base: process.env.VITE_BASE || '/portfolio/',
   plugins: [react()],
+  // Ensure a single copy of three is used across three / drei /
+  // postprocessing so instanceof checks and the render loop stay consistent.
+  resolve: {
+    dedupe: ['three'],
+  },
   server: {
     port: 5847,
     host: '0.0.0.0',

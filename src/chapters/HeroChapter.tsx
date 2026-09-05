@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { portfolioContent } from '../content/portfolio';
+import { Avatar } from '../components/Avatar';
 import './HeroChapter.css';
 
 const containerVariants = {
@@ -32,6 +33,7 @@ export function HeroChapter() {
 
   return (
     <section id="hero" className="chapter hero-chapter">
+      <Avatar />
       <motion.div
         className="hero-content"
         variants={containerVariants}

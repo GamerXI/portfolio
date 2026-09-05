@@ -1,12 +1,12 @@
 import { useEffect, useRef, Suspense } from 'react';
 import type { RefObject } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing';
 import * as THREE from 'three';
 import { useReducedMotion } from 'framer-motion';
 import { useSceneQuality } from './scene/useSceneQuality';
 import { Particles } from './scene/Particles';
 import { NodeLattice } from './scene/NodeLattice';
-import { CrystalForm } from './scene/CrystalForm';
 
 /** Amber grid that recedes into the fog — a faint floor for the space. */
 function GridFloor({ scrollProgress }: { scrollProgress: number }) {
@@ -106,10 +106,10 @@ export function Scene3D({ scrollProgress }: Scene3DProps) {
       >
         <Suspense fallback={null}>
           <fog attach="fog" args={['#0c0a09', 14, 52]} />
-          <ambientLight intensity={0.25} />
-          <pointLight position={[8, 10, 8]} intensity={0.7} color="#e8a54b" />
-          <pointLight position={[-10, -8, -6]} intensity={0.3} color="#f5f3ee" />
-          <directionalLight position={[4, 6, 5]} intensity={0.4} color="#f0d7a8" />
+          <ambientLight intensity={0.35} />
+          <pointLight position={[8, 10, 8]} intensity={0.8} color="#e8a54b" />
+          <pointLight position={[-10, -8, -6]} intensity={0.35} color="#f5f3ee" />
+          <directionalLight position={[4, 6, 5]} intensity={0.5} color="#f0d7a8" />
 
           <CameraRig scrollProgress={scrollProgress} mouse={mouse} reactive={reactive} />
 
@@ -122,14 +122,22 @@ export function Scene3D({ scrollProgress }: Scene3DProps) {
 
           <NodeLattice mouse={mouse} scrollProgress={scrollProgress} reactive={reactive} />
 
-          <CrystalForm
-            mouse={mouse}
-            scrollProgress={scrollProgress}
-            glass={quality.allowGlass}
-            reactive={reactive}
-          />
-
           {!quality.coarse && <GridFloor scrollProgress={scrollProgress} />}
+
+          {/* Subtle bloom + vignette give the ambient particle field an amber
+              haze and a cinematic frame. Desktop only. */}
+          {!quality.coarse && (
+            <EffectComposer>
+              <Bloom
+                intensity={0.6}
+                luminanceThreshold={0.6}
+                luminanceSmoothing={0.4}
+                mipmapBlur
+                radius={0.6}
+              />
+              <Vignette eskil={false} offset={0.25} darkness={0.7} />
+            </EffectComposer>
+          )}
         </Suspense>
       </Canvas>
     </div>

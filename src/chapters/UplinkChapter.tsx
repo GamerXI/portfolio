@@ -1,28 +1,8 @@
 import { useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
 import { portfolioContent } from '../content/portfolio';
 import type { Social } from '../content/portfolio';
+import { ScrollReveal } from '../components/ScrollReveal';
 import './UplinkChapter.css';
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.2,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: 'easeOut' as const },
-  },
-};
 
 const socialIcons: Record<string, React.ReactNode> = {
   github: (
@@ -50,7 +30,6 @@ const socialIcons: Record<string, React.ReactNode> = {
 };
 
 export function UplinkChapter() {
-  const prefersReducedMotion = useReducedMotion();
   const [hoveredSocial, setHoveredSocial] = useState<string | null>(null);
   const { personal, socials } = portfolioContent;
   const resumeHref = personal.resumeUrl
@@ -59,23 +38,17 @@ export function UplinkChapter() {
 
   return (
     <section id="uplink" className="chapter uplink-chapter">
-      <motion.div
-        className="uplink-container"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-100px' }}
-      >
-        <motion.header className="section-header" variants={itemVariants}>
+      <div className="uplink-container">
+        <ScrollReveal className="section-header">
           <div className="section-marker">
             <span className="section-marker-dot" />
             <span className="section-number">005</span>
           </div>
           <h2 className="section-title">UPLINK.</h2>
           <span className="section-label">// ESTABLISH_CONNECTION</span>
-        </motion.header>
+        </ScrollReveal>
 
-        <motion.div className="uplink-terminal" variants={itemVariants}>
+        <ScrollReveal className="uplink-terminal">
           <div className="terminal-header">
             <span className="terminal-title">connection_init.sys</span>
             <span className="terminal-status">
@@ -92,9 +65,9 @@ export function UplinkChapter() {
               <span className="line-text">READY FOR TRANSMISSION</span>
             </div>
           </div>
-        </motion.div>
+        </ScrollReveal>
 
-        <motion.div className="uplink-main" variants={itemVariants}>
+        <ScrollReveal className="uplink-main">
           <div className="main-message">
             <h3 className="message-title">Let's Build Something Together</h3>
             <p className="message-text">
@@ -121,16 +94,16 @@ export function UplinkChapter() {
               </a>
             )}
           </div>
-        </motion.div>
+        </ScrollReveal>
 
-        <motion.div className="uplink-channels" variants={itemVariants}>
+        <ScrollReveal className="uplink-channels">
           <div className="channels-header">
             <span className="channels-label">SECONDARY CHANNELS</span>
             <span className="channels-count">{socials.length} ACTIVE</span>
           </div>
           <div className="channels-grid">
-            {socials.map((social: Social, index: number) => (
-              <motion.a
+            {socials.map((social: Social) => (
+              <a
                 key={social.platform}
                 href={social.url}
                 target="_blank"
@@ -138,11 +111,6 @@ export function UplinkChapter() {
                 className={`channel-card ${hoveredSocial === social.platform ? 'hovered' : ''}`}
                 onMouseEnter={() => setHoveredSocial(social.platform)}
                 onMouseLeave={() => setHoveredSocial(null)}
-                initial={prefersReducedMotion ? {} : { opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={prefersReducedMotion ? {} : { y: -4 }}
               >
                 <div className="channel-icon">
                   {socialIcons[social.platform.toLowerCase()] || socialIcons.portfolio}
@@ -152,12 +120,12 @@ export function UplinkChapter() {
                   <span className="channel-handle">{social.handle || social.url}</span>
                 </div>
                 <span className="channel-arrow">↗</span>
-              </motion.a>
+              </a>
             ))}
           </div>
-        </motion.div>
+        </ScrollReveal>
 
-        <motion.footer className="uplink-footer" variants={itemVariants}>
+        <ScrollReveal className="uplink-footer">
           <div className="footer-info">
             <span className="footer-label">LOCATION</span>
             <span className="footer-value">{personal.location}</span>
@@ -174,14 +142,14 @@ export function UplinkChapter() {
               <span className="status-dot" /> AVAILABLE
             </span>
           </div>
-        </motion.footer>
+        </ScrollReveal>
 
-        <motion.div className="copyright" variants={itemVariants}>
+        <ScrollReveal className="copyright">
           <span>© {new Date().getFullYear()} {personal.name}</span>
           <span className="copyright-divider">|</span>
           <span>ALL SYSTEMS OPERATIONAL</span>
-        </motion.div>
-      </motion.div>
+        </ScrollReveal>
+      </div>
     </section>
   );
 }

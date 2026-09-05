@@ -83,11 +83,13 @@ export function NodeLattice({ mouse, scrollProgress, reactive = true }: NodeLatt
     const scale = 0.85 + intensity * 0.2;
     group.scale.setScalar(scale);
 
+    // Continuous idle spin blended with a scroll-driven turn (reverses on
+    // scroll-up), plus pointer parallax with inertia.
     const t = state.clock.elapsedTime;
     const mx = reactive ? mouse.current.x : 0;
     const my = reactive ? mouse.current.y : 0;
-    group.rotation.y = t * 0.06 + mx * 0.35;
-    group.rotation.x += ((my * 0.25) - group.rotation.x) * Math.min(1, delta * 2);
+    group.rotation.y = t * 0.05 + scrollProgress * Math.PI * 3 + mx * 0.35;
+    group.rotation.x += ((Math.sin(t * 0.1) * 0.06 + my * 0.25) - group.rotation.x) * Math.min(1, delta * 2);
   });
 
   return (

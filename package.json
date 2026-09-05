@@ -8,15 +8,19 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "postinstall": "node scripts/patch-avatar-decl-maps.mjs"
   },
   "dependencies": {
+    "@bible-strong/avatar-react": "^0.1.0",
     "@gsap/react": "^2.1.2",
     "@react-three/drei": "^10.7.8",
     "@react-three/fiber": "^9.7.0",
+    "@react-three/postprocessing": "^3.1.1",
     "framer-motion": "^13.2.0",
     "gsap": "^3.15.0",
     "lenis": "^1.3.26",
+    "postprocessing": "^6.39.4",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "three": "^0.185.1"

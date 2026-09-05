@@ -52,12 +52,13 @@ export function Particles({ mouse, scrollProgress, count, reactive = true }: Par
     const points = pointsRef.current;
     if (!group || !points) return;
 
+    // Blend a continuous idle drift (time-based) with a scroll-driven turn.
+    // The scroll term reverses cleanly when the visitor scrolls back up.
     const t = state.clock.elapsedTime;
-    // Ambient slow rotation.
-    points.rotation.y += delta * 0.02;
-    points.rotation.x = Math.sin(t * 0.05) * 0.06;
+    points.rotation.y = t * 0.03 + scrollProgress * Math.PI * 1.4;
+    points.rotation.x = Math.sin(t * 0.05) * 0.06 + Math.sin(scrollProgress * Math.PI) * 0.12;
 
-    // Pointer parallax — cloud leans toward the cursor.
+    // Pointer parallax — cloud leans toward the cursor (keeps it alive at rest).
     const mx = reactive ? mouse.current.x : 0;
     const my = reactive ? mouse.current.y : 0;
     const targetX = mx * 2.4;

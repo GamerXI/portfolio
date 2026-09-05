@@ -1,14 +1,18 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { FreddyAvatar } from './Avatar';
 import './BootLoader.css';
 
 interface BootLoaderProps {
   onComplete: () => void;
 }
 
+const BOOT_MOODS = ['searching', 'thinking', 'curious', 'excited', 'working'];
+
 export function BootLoader({ onComplete }: BootLoaderProps) {
   const [progress, setProgress] = useState(0);
   const [phase, setPhase] = useState<'loading' | 'reveal' | 'exit'>('loading');
+  const [bootAnim] = useState(() => BOOT_MOODS[Math.floor(Math.random() * BOOT_MOODS.length)]);
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -54,14 +58,14 @@ export function BootLoader({ onComplete }: BootLoaderProps) {
           transition={{ duration: 0.6 }}
         >
           <div className="boot-content">
-            {/* Main identity mark */}
-            <motion.div 
-              className="boot-mark"
-              initial={{ opacity: 0, scale: 0.9 }}
+            {/* Avatar greeting */}
+            <motion.div
+              className="boot-avatar"
+              initial={{ opacity: 0, scale: 0.85 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             >
-              <span className="mark-text">SS</span>
+              <FreddyAvatar animation={bootAnim} size="100%" ariaLabel="Loading avatar" />
             </motion.div>
 
             {/* Loading bar */}

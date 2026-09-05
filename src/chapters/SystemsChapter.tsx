@@ -1,27 +1,7 @@
-import { motion, useReducedMotion } from 'framer-motion';
 import { portfolioContent } from '../content/portfolio';
 import type { Skill } from '../content/portfolio';
+import { ScrollReveal } from '../components/ScrollReveal';
 import './SystemsChapter.css';
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: 'easeOut' as const },
-  },
-};
 
 const categoryLabels: Record<string, string> = {
   languages: 'LANGUAGES',
@@ -46,7 +26,6 @@ const categoryIcons: Record<string, string> = {
 };
 
 export function SystemsChapter() {
-  const prefersReducedMotion = useReducedMotion();
   const { skills } = portfolioContent;
 
   const skillsByCategory = skills.reduce<Record<string, Skill[]>>((acc, skill) => {
@@ -61,33 +40,23 @@ export function SystemsChapter() {
 
   return (
     <section id="systems" className="chapter systems-chapter">
-      <motion.div
-        className="systems-container"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-100px' }}
-      >
-        <motion.header className="section-header" variants={itemVariants}>
+      <div className="systems-container">
+        <ScrollReveal className="section-header">
           <div className="section-marker">
             <span className="section-marker-dot" />
             <span className="section-number">002</span>
           </div>
           <h2 className="section-title">SYSTEMS.</h2>
           <span className="section-label">// SKILL_MATRIX</span>
-        </motion.header>
+        </ScrollReveal>
 
         <div className="systems-grid">
-          {categoryOrder.map((categoryKey) => {
+          {categoryOrder.map((categoryKey, i) => {
             const categorySkills = skillsByCategory[categoryKey];
             if (!categorySkills) return null;
 
             return (
-              <motion.div
-                key={categoryKey}
-                className="system-cluster"
-                variants={itemVariants}
-              >
+              <ScrollReveal key={categoryKey} className="system-cluster" y={40} delay={Math.min(i * 0.05, 0.4)}>
                 <div className="cluster-header">
                   <span className="cluster-icon">{categoryIcons[categoryKey]}</span>
                   <span className="cluster-title">{categoryLabels[categoryKey]}</span>
@@ -95,38 +64,24 @@ export function SystemsChapter() {
                 </div>
 
                 <div className="cluster-skills">
-                  {categorySkills.map((skill: Skill, index: number) => (
-                    <motion.div
-                      key={skill.name}
-                      className="skill-node"
-                      initial={prefersReducedMotion ? {} : { opacity: 0, scale: 0.8 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: index * 0.05 }}
-                      whileHover={prefersReducedMotion ? {} : { scale: 1.05 }}
-                    >
+                  {categorySkills.map((skill: Skill) => (
+                    <div key={skill.name} className="skill-node">
                       <div className="skill-info">
                         <span className="skill-name">{skill.name}</span>
                         <span className="skill-level">{skill.level}%</span>
                       </div>
                       <div className="skill-bar">
-                        <motion.div
-                          className="skill-bar-fill"
-                          initial={{ width: 0 }}
-                          whileInView={{ width: `${skill.level}%` }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 0.8, delay: index * 0.05, ease: 'easeOut' }}
-                        />
+                        <div className="skill-bar-fill" style={{ width: `${skill.level}%` }} />
                       </div>
-                    </motion.div>
+                    </div>
                   ))}
                 </div>
-              </motion.div>
+              </ScrollReveal>
             );
           })}
         </div>
 
-        <motion.div className="systems-console" variants={itemVariants}>
+        <ScrollReveal className="systems-console">
           <div className="console-header">
             <span className="console-label">SYSTEM_DIAGNOSTIC</span>
             <span className="console-status">
@@ -149,8 +104,8 @@ export function SystemsChapter() {
               </span>
             </div>
           </div>
-        </motion.div>
-      </motion.div>
+        </ScrollReveal>
+      </div>
     </section>
   );
 }

@@ -1,0 +1,56 @@
+.hero-avatar {
+  position: absolute;
+  top: 50%;
+  right: 5%;
+  width: clamp(300px, 34vw, 520px);
+  aspect-ratio: 1 / 1;
+  margin-top: -17vw;
+  z-index: 2;
+  pointer-events: auto;
+  cursor: pointer;
+  animation: avatar-float 6s ease-in-out infinite;
+  will-change: transform;
+  filter: drop-shadow(0 24px 54px rgba(0, 0, 0, 0.45));
+}
+
+.hero-avatar.is-static {
+  animation: none;
+}
+
+/* The package renders its own sized container; make it fill the wrapper. */
+.hero-avatar > * {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Idle, time-based hover */
+@keyframes avatar-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+
+/* Tablet: tuck into the lower-right corner, above the scroll cue. */
+@media (max-width: 900px) {
+  .hero-avatar {
+    width: clamp(150px, 40vw, 250px);
+    top: auto;
+    bottom: 7rem;
+    right: 1rem;
+    margin-top: 0;
+  }
+}
+
+/* Phones: smaller, still lower-right. */
+@media (max-width: 480px) {
+  .hero-avatar {
+    width: clamp(120px, 42vw, 180px);
+    bottom: 5.5rem;
+    right: 0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-avatar {
+    animation: none;
+  }
+}
